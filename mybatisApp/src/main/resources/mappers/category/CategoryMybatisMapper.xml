@@ -22,5 +22,15 @@
         FROM category_tbl
         WHERE ID = #{id}
     </select>
+    <select id="findAll" resultType="com.maven.springboot.mybatisapp.category.CategoryDto">
+        SELECT id, name
+        FROM category_tbl
+    </select>
+    <select id="findAllByNameContains" resultType="com.maven.springboot.mybatisapp.category.CategoryDto">
+        SELECT id, name
+        FROM category_tbl
+        WHERE NAME LIKE '%${name}%'
+    </select>
+
 
 </mapper>

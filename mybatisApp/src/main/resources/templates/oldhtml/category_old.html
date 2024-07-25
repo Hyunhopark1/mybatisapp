@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Old Html</title>
@@ -8,44 +8,50 @@
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
 </head>
 <body>
-    <form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_act">
-        <p><label for="id"></label><input type="number" id="id" name="id"/>
-        <p><label for="name"></label><input type="text" id="name" name="name"/>
-        <p><input type="submit" value="전송"/><input type="reset" value="취소"/>
-    </form>
-    <div>
-        Category List
-    </div>
-    <section id="content-types">
-        <div class="row">
-            <div class="col-xl-4 col-md-6 col-sm-12" th:each="item: ${itemList}">
+<form id="search-form" name="search-form" method="get" action="/ctweb/oldhtml/category_old_act">
+    <label for="name"></label><input type="text"  name="name" placeholder="검색할 이름 입력"/>
+    <input type="submit" value="검색"/><input type="reset" value="취소"/>
+</form>
 
-                <div class="card">
-                    <a th:href="@{/ctweb/oldhtml/category_old_view(id=${item.id})}">
+<form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_act">
+    <label for="id"></label><input type="number" id="id" name="id"/>
+    <label for="name"></label><input type="text" id="name" name="name"/>
+    <input type="submit" value="전송"/><input type="reset" value="취소"/>
+</form>
+<div>
+    Category List
+</div>
+<section id="content-types">
+    <div class="row">
+        <div class="col-xl-4 col-md-6 col-sm-12" th:each="node : ${allList}">
+            <div class="card">
+                <a th:href="@{/ctweb/oldhtml/category_old_view(id=${node.id})}">
                     <div class="card-content">
-                        <div class="card-body" th:text="${item.id}"></div>
-                        <div class="card-text" th:text="${item.name}"></div>
+                        <div class="card-body" th:text="${node.id}"></div>
+                        <div class="card-text" th:text="${node.name}"></div>
                     </div>
-                    </a>
-                </div>
+                </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-        <ul id="categoryList" >
-            <li>
-                <span>id</span>
-                <span> : </span>
-                <span>name</span>
-            </li>
-            <li th:each="item: ${itemList}">
-                <a th:href="@{/ctweb/oldhtml/category_old_view(id=${item.id})}">
-                <span th:text="${item.id}"></span>
-                <span> : </span>
-                <span th:text="${item.name}"></span>
-                </a>
-            </li>
-        </ul>
+
+<div>page : [[${searchCategoryDto.page}]], search name = [[${searchCategoryDto.name}]]</div>
+<ul id="categoryList">
+    <li>
+        <span>id</span>
+        <span> : </span>
+        <span>name</span>
+    </li>
+    <li th:each="item : ${allList}">
+        <a th:href="@{/ctweb/oldhtml/category_old_view(id=${item.id})}">
+            <span th:text="${item.id}"></span>
+            <span> : </span>
+            <span th:text="${item.name}"></span>
+        </a>
+    </li>
+</ul>
 
 </body>
 </html>

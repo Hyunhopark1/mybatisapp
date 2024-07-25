@@ -9,15 +9,15 @@ import java.util.List;
 public interface CategoryMybatisMapper {
     void insert(CategoryDto dto);
 
-    CategoryDto findById(long id);
-
-    List<CategoryDto> findAll();
+    void update(CategoryDto dto);
 
     void deleteById(Long id);
 
-    void update(CategoryDto dto);
-
-    List<CategoryDto> findAllByNameContains(String name);
+    CategoryDto findById(long id);
 
     CategoryDto findByName(String name);
+
+    List<CategoryDto> findAll();
+
+    List<CategoryDto> findAllByNameContains(SearchCategoryDto searchCategoryDto);
 }

@@ -37,7 +37,7 @@
         FROM category_tbl
         WHERE NAME LIKE '%${name}%'
         ORDER BY ${orderByWord}
-        
+        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
 
 

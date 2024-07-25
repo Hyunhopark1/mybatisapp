@@ -2,11 +2,11 @@ package com.maven.springboot.mybatisapp.category;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-
-@Setter
 @Getter
-@Builder
+@Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -16,9 +16,4 @@ public class CategoryDto implements ICategory {
 
 
     private String name;
-
-    @Override
-    public String toString() {
-        return String.format("ID : %6d, 이름 : %s", this.id, this.name);
-    }
 }

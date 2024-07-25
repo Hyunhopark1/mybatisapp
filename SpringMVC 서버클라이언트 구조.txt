@@ -1,0 +1,36 @@
+Sping MVC 웹 어플리케이션에서 HTML폼 데이터를 Java객체로 매핑하는 과정
+
+
+1. HTML 폼 제출
+<form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_act">
+    <label for="id"></label><input type="number" id="id" name="id"/>
+    <label for="name"></label><input type="text" id="name" name="name"/>
+    <input type="submit" value="전송"/><input type="reset" value="취소"/>
+</form>
+
+
+---> '/ctweb/oldhtml/category_old_act'  URL로 POST요청 보냄
+---> input 태그의 name속성의 값은 Java객체에 매핑되는 값이다. 
+---> 예를들어 name속성값인 id,name은  CategoryDto의 필드 id,name과 매핑된다. 
+
+2. Web컨트롤러에서 @PostMapping과  @ModelAttribute를 사용하여 폼 데이터 처리함
+@PostMapping("/oldhtml/category_old_act")
+public String categoryOldInsert(@ModelAttribute CategoryDto dto, Model model) {
+    // 처리 로직
+}
+-@PostMapping() : 지정된 url로 들어온 Post 요청을 처리함
+-@ModelAttribute : 객체를 생성하고 요청 파라미터(id,name)를 이 객체에 매핑함
+
+3. 데이터 바인딩
+
+CategoryDto클래스는 데이터전송을 위한 객체로, 필드이름이
+폼 입력의 'name' 속성과 일치해야함.
+CategoryDto의 필드 id,name은  폼에서 보낸 id,name 값으로 자동으로 채워진다.
+
+4. 데이터베이스에 값 삽입
+
+categoryservice.insert(dto) 
+--> 미리 사전에 서비스단 클래스와 DB접근인터페이스인 Mapper인터페이스를 정의해놓았고
+service의 insert()메소드 안에서는 mapper인터페이스 메소드를 호출한다.
+
+

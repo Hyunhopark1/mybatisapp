@@ -5,10 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class CategoryServiceimpl implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService {
 
     @Autowired
     private CategoryMybatisMapper categoryMybatisMapper;
@@ -16,23 +15,27 @@ public class CategoryServiceimpl implements ICategoryService {
 
     @Override
     public ICategory findById(Long id) {
-
-        CategoryDto dto = categoryMybatisMapper.findById(id);
-        return dto;
+        if ( id == null || id <= 0 ) {
+            return null;
+        }
+        CategoryDto find = this.categoryMybatisMapper.findById(id);
+        return find;
     }
 
     @Override
     public ICategory findByName(String name) {
-        if (name == null || name.isEmpty()) {
+        if ( name == null || name.isEmpty() ) {
             return null;
         }
-        CategoryDto dto = categoryMybatisMapper.findByName(name);
-        return dto;
+        CategoryDto find = this.categoryMybatisMapper.findByName(name);
+        return find;
     }
 
     @Override
     public List<ICategory> getAllList() {
-        List<ICategory> list = this.getICategoryList(this.categoryMybatisMapper.findAll());
+        List<ICategory> list = this.getICategoryList(
+                this.categoryMybatisMapper.findAll()
+        );
         return list;
     }
 
@@ -73,12 +76,12 @@ public class CategoryServiceimpl implements ICategoryService {
     }
 
     @Override
-    public boolean remove(Long id) throws Exception {
+    public boolean delete(Long id) throws Exception {
         ICategory find = this.findById(id);
-        if (find == null) {
+        if ( find == null ) {
             return false;
         }
-        categoryMybatisMapper.deleteById(id);
+        this.categoryMybatisMapper.deleteById(id);
         return true;
     }
 
@@ -95,12 +98,15 @@ public class CategoryServiceimpl implements ICategoryService {
     }
 
     @Override
-    public List<ICategory> findAllByNameContains(String name) {
-        if ( name == null || name.isEmpty() ) {
+    public List<ICategory> findAllByNameContains(SearchCategoryDto dto) {
+        if ( dto == null ) {
+            //return List.of();
             return new ArrayList<>();
         }
+        dto.setOrderByWord("id DESC");
+        dto.setRowsOnePage(10);
         List<ICategory> list = this.getICategoryList(
-                this.categoryMybatisMapper.findAllByNameContains(name)
+                this.categoryMybatisMapper.findAllByNameContains(dto)
         );
         return list;
     }

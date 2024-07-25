@@ -18,7 +18,7 @@ public class CategoryController {
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
-    private CategoryServiceimpl categoryService;
+    private CategoryServiceImpl categoryService;
 
     @PostMapping
     public ResponseEntity<ICategory> insertPB(@RequestBody CategoryDto dto) {
@@ -55,7 +55,7 @@ public class CategoryController {
             if (id == null) {
                 return ResponseEntity.badRequest().build();
             }
-            Boolean result = this.categoryService.remove(id);
+            Boolean result = this.categoryService.delete(id);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             logger.error(e.toString());
@@ -102,7 +102,9 @@ public class CategoryController {
             if ( name == null || name.isEmpty() ) {
                 return ResponseEntity.badRequest().build();
             }
-            List<ICategory> result = this.categoryService.findAllByNameContains(name);
+            SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+                    .name(name).page(1).build();
+            List<ICategory> result = this.categoryService.findAllByNameContains(searchCategoryDto);
             if ( result == null || result.size() <= 0 ) {
                 return ResponseEntity.notFound().build();
             }

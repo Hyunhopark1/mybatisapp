@@ -11,8 +11,9 @@
 <form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_update" th:object="${categoryDto}">
     <input type="number" id="id" th:field="*{id}" readonly/>
    <input type="text" id="name" th:field="*{name}" />
-    <p><input type="submit" value="수정"/><input type="reset" value="취소"/>
-        <button style="text-decoration: none"><a th:href="@{/ctweb/oldhtml/category_old_delete(id=*{id})}">삭제</a></button>
+    <p><input type="submit" value="수정"/>
+        <input type="reset" value="취소"/>
+        <button><a th:href="@{/ctweb/oldhtml/category_old_delete(id=*{id})}">삭제</a></button></p>
 </form>
 </body>
 </html>

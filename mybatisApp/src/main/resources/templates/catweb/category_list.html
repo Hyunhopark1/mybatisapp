@@ -92,7 +92,7 @@
 <body>
 <!--검색 -->
 <div class="form-container">
-    <form id="search-form" name="search-form" method="get" action="/catweb/catweb/category_old_search">
+    <form id="search-form" name="search-form" method="get" action="/catweb/category_old_search">
         <label for="search-name">이름</label>
         <input type="text" id="search-name" name="name" placeholder="검색할 이름 입력"/>
         <input type="submit" value="검색"/>
@@ -104,7 +104,7 @@
     <div class="row">
         <div class="col-xl-4 col-md-6 col-sm-12" th:each="node : ${allList}">
             <div class="card">
-                <a th:href="@{/catweb/catweb/category_old_view(id=${node.id})}">
+                <a th:href="@{/catweb/category_old_view(id=${node.id})}">
                     <div class="card-content">
                         <div class="card-body" th:text="${node.id}"></div>
                         <div class="card-text" th:text="${node.name}"></div>
@@ -116,7 +116,7 @@
 </section>
     <!--추가 버튼-->
     <div class="buttons">
-        <button class="btn btn-info btn-insert"><a href="/catweb/catweb/category_add">추가</a></button>
+        <button class="btn btn-info btn-insert"><a href="/catweb/category_add">추가</a></button>
     </div>
 </div>
 

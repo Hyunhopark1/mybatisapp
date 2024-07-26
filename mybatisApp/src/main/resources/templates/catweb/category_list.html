@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Category List</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script src="../../static/js/jquery-3.7.1.min.js"></script>
+    <style>
+
+        .form-container {
+            width: 100%;
+            text-align: center;
+            font-family:  cursive;
+        }
+
+
+        #search-form {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* 요소 사이의 간격 */
+        }
+
+        #search-form > label{
+            flex : 1;
+            float: left;
+            border: 2px solid black;
+            padding : 40px 150px;
+            margin:10px;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        #search-form > input{
+            float: left;
+            border: 1px solid black;
+            padding : 40px 150px;
+            margin:10px;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        #search-form input[type="text"] {
+            flex: 2;
+            width: 100%;
+        }
+        #search-form input[type="submit"] {
+            flex: 1;
+            border-radius: 30px;
+            background: dodgerblue;
+            color:#ffffff;
+            cursor: pointer;
+        }
+        .category-list{
+            border:1px solid black;
+        }
+        .btn-insert{
+            width:200px;
+            float:right;
+        }
+        .btn-insert a {
+            display: block;
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .buttons{
+            height:60px;
+        }
+        #page{
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        #page li{
+            margin: 10px; /* 항목 간의 여백 */
+            padding: 10px; /* 항목 내부 여백 */
+            border: 1px solid black; /* 항목 테두리 */
+            border-radius: 5px; /* 항목 모서리 둥글게 하기 */
+        }
+        #page a{
+            text-decoration: none; /* 링크 기본 스타일 제거 */
+            color: black; /* 링크 텍스트 색상 설정 */
+        }
+        .btn{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<!--검색 -->
+<div class="form-container">
+    <form id="search-form" name="search-form" method="get" action="/catweb/catweb/category_old_search">
+        <label for="search-name">이름</label>
+        <input type="text" id="search-name" name="name" placeholder="검색할 이름 입력"/>
+        <input type="submit" value="검색"/>
+    </form>
+</div>
+<!-- 리스트 -->
+<div class="category-list">
+<section id="content-types">
+    <div class="row">
+        <div class="col-xl-4 col-md-6 col-sm-12" th:each="node : ${allList}">
+            <div class="card">
+                <a th:href="@{/catweb/catweb/category_old_view(id=${node.id})}">
+                    <div class="card-content">
+                        <div class="card-body" th:text="${node.id}"></div>
+                        <div class="card-text" th:text="${node.name}"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+    <!--추가 버튼-->
+    <div class="buttons">
+        <button class="btn btn-info btn-insert"><a href="/catweb/catweb/category_add">추가</a></button>
+    </div>
+</div>
+
+<!--페이지 & 페이지 이동 버튼-->
+<div class="buttons">
+    <button class="btn btn-dark"><a th:href="@{/catweb/category_list(page=${searchCategoryDto.page}-1, name=${searchCategoryDto.name})}">이전 페이지</a></button>
+    <ul id="page">
+        <li>
+            page
+        </li>
+        <li th:each="item : ${searchCategoryDto}">
+            <a th:href="@{/catweb/category_list(page=${item.page})}">
+                <span th:text="${item.page}"></span>
+            </a>
+        </li>
+    </ul>
+    <button class="btn btn-dark"><a th:href="@{/catweb/category_list(page=${searchCategoryDto.page}+1, name=${searchCategoryDto.name})}">다음 페이지</a></button>
+</div>
+
+</body>
+</html>

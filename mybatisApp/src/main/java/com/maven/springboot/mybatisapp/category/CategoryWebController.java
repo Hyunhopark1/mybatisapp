@@ -23,6 +23,12 @@ public class CategoryWebController {
         return "index";
     }
 
+    @GetMapping("/catweb/category_add")
+    public String categoryAdd(){
+        return "catweb/category_add";
+    }
+
+
     @GetMapping("/oldhtml/category_old")    // 브라우저의 URL 주소
     public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {
         try {
@@ -32,6 +38,8 @@ public class CategoryWebController {
 //            List<ICategory> allList = this.categoryService.getAllList();
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
                     .name(name).page(page).build();
+            int count = this.categoryService.countAllByNameContains(searchCategoryDto);
+            searchCategoryDto.setTotal(count);
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
             model.addAttribute("allList", allList);
             model.addAttribute("searchCategoryDto", searchCategoryDto);
@@ -43,7 +51,7 @@ public class CategoryWebController {
         return "oldhtml/category_old";     //resources/templates 폴더안의 화면파일 찾음
     }
 
-    @PostMapping("/oldhtml/category_old_act")
+    @PostMapping("/oldhtml/category_insert")
     public String categoryOldInsert(@ModelAttribute CategoryDto dto, Model model) {
         try {
             if (dto == null || dto.getName() == null || dto.getName().isEmpty()) {
@@ -60,7 +68,7 @@ public class CategoryWebController {
         return "redirect:category_old?page=1&name=";  // 브라우저 주소를 redirect 한다.
     }
 
-    @GetMapping("/oldhtml/category_old_view")    // 브라우저의 URL 주소
+    @GetMapping("/catweb/category_old_view")    // 브라우저의 URL 주소
     public String categoryOldView(Model model, @RequestParam Long id) {
         try {
             if ( id == null || id <= 0 ) {
@@ -78,10 +86,12 @@ public class CategoryWebController {
             model.addAttribute("error_message", "서버 에러입니다. 관리자에게 문의 하세요.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
-        return "oldhtml/category_view";     //resources/templates 폴더안의 화면파일 찾음
+        return "catweb/category_view";     //resources/templates 폴더안의 화면파일 찾음
     }
 
-    @PostMapping("/oldhtml/category_old_update")
+
+
+    @PostMapping("/catweb/category_old_update")
     public String categoryOldUpdate(Model model, @ModelAttribute CategoryDto categoryDto) {
         try {
             if (categoryDto == null || categoryDto.getId() <= 0 || categoryDto.getName().isEmpty()) {
@@ -102,7 +112,7 @@ public class CategoryWebController {
         return "redirect:category_old?page=1&name=";
     }
 
-    @GetMapping("/oldhtml/category_old_delete")
+    @GetMapping("/catweb/category_old_delete")
     public String categoryDelete(Model model, @RequestParam Long id) {
         try {
             if (id == null || id <= 0) {
@@ -122,4 +132,27 @@ public class CategoryWebController {
         }
         return "redirect:category_old?page=1&name=";
     }
+
+
+
+    /*아직 미완성*/
+    @GetMapping("/catweb/category_old_search")
+    public String categorySearch(Model model,  @RequestParam String name, @RequestParam(value = "page", required = false, defaultValue = "1")  int page) {
+        try {
+            if (name == null || name.isEmpty()) {
+                model.addAttribute("error_message", "name 이 있어야 합니다.");
+                return "error/error_bad";  // resources/templates 폴더안의 화면파일
+            }
+            SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+                    .name(name).page(page).build();
+            this.categoryService.findAllByNameContains(searchCategoryDto);
+
+        } catch (Exception ex) {
+            log.error(ex.toString());
+            model.addAttribute("error_message", name + " 오류입니다.");
+            return "error/error_save";  // resources/templates 폴더안의 화면파일
+        }
+        return "redirect:category_list?page="+ page + "&name=" + name;
+    }
+
 }

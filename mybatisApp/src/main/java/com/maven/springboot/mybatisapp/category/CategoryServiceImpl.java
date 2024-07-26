@@ -110,4 +110,9 @@ public class CategoryServiceImpl implements ICategoryService {
         );
         return list;
     }
+
+    @Override
+    public int countAllByNameContains(SearchCategoryDto searchCategoryDto) {
+        return this.categoryMybatisMapper.countAllByNameContains(searchCategoryDto);
+    }
 }

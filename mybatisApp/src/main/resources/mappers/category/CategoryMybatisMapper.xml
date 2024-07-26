@@ -15,7 +15,7 @@
         DELETE FROM category_tbl
         WHERE id = #{id}
     </delete>
-    <select id="findById" resultType="com.maven.springboot.mybatisapp.category.CategoryDto">
+    <select id="findById" resultType="CategoryDto">
         SELECT id, name
         FROM category_tbl
         WHERE ID = #{id}
@@ -32,10 +32,15 @@
              , name
         FROM category_tbl
     </select>
-    <select id="findAllByNameContains" resultType="com.maven.springboot.mybatisapp.category.CategoryDto">
+    <select id="countAllByNameContains" parameterType="SearchCategoryDto" resultType="int">
+        SELECT count(*)
+        FROM category_tbl
+        WHERE name like CONCAT('%',#{name},'%')
+    </select>
+    <select id="findAllByNameContains" parameterType="SearchCategoryDto" resultType="CategoryDto">
         SELECT id, name
         FROM category_tbl
-        WHERE NAME LIKE '%${name}%'
+        WHERE NAME LIKE CONCAT('%',#{name},'%')
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>

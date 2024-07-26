@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Category insert</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <style>
+        .header-insert{
+            text-align: center;
+            position: sticky;
+            top: 0;
+            left: 0;
+            background:rgb(63, 96, 143);
+        }
+        .insert-title{
+            font-size:40px;
+            font-weight: 700;
+            color:lightgrey;
+            padding:30px 200px;
+        }
+        #add-form{
+            display:flex;
+            flex-direction : row;
+            text-align : center;
+        }
+        #add-form label{
+            flex:1;
+            float: left;
+            font-size: 20px;
+            font-weight: 800;
+            border:1px solid black;
+        }
+        #add-form input[type=text]{
+            flex:2;
+            float: left;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        #add-form button{
+            flex:1;
+            float: left;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        button a{
+            color:#ffffff;
+        }
+    </style>
+    <script>
+        //$(document).ready(function(){
+        //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 실행한다.
+        //});
+        $(function(){
+        });
+
+        function categoryInsert() {
+            let name = $("#name").val();
+            let ret = confirm(name + "를 추가 하시겠습니까 ?");
+            return ret;
+        }
+    </script>
+</head>
+<body>
+    <div class="header-insert">
+        <h1 class="insert-title">분류 추가</h1>
+    </div>
+    <!--추가-->
+    <div class="form-container">
+        <form id="add-form" name="search-form" method="post" action="/catweb/category_insert" onsubmit="return categoryInsert();">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="추가할 이름 입력"/>
+            <div class="buttons">
+                <button class="btn btn-light"><a href="/catweb/category_list?page=1&name=">뒤로</a></button>
+                <input class="btn btn-primary" type="submit" value="추가"/>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+</html>

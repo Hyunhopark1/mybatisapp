@@ -84,6 +84,27 @@ public class CateWebController {
         return "redirect:category_list?page=1&name=";  // 브라우저 주소를 redirect 한다.
     }
 
+    @GetMapping("/category_view")    // 브라우저의 URL 주소
+    public String categoryOldView(Model model, @RequestParam Long id) {
+        try {
+            if ( id == null || id <= 0 ) {
+                model.addAttribute("error_message", "ID는 1보다 커야 합니다.");
+                return "error/error_bad";  // resources/templates 폴더안의 화면파일
+            }
+            ICategory find = this.categoryService.findById(id);
+            if ( find == null ) {
+                model.addAttribute("error_message", id + " 데이터가 없습니다.");
+                return "error/error_find";
+            }
+            model.addAttribute("categoryDto", find);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+            model.addAttribute("error_message", "서버 에러입니다. 관리자에게 문의 하세요.");
+            return "error/error_save";  // resources/templates 폴더안의 화면파일
+        }
+        return "catweb/category_view";     //resources/templates 폴더안의 화면파일 찾음
+    }
+
 
 
 }

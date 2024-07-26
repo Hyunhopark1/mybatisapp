@@ -8,12 +8,12 @@
     </style>
 </head>
 <body>
-<form id="form" name="form" method="post" action="/catweb/catweb/category_old_update" th:object="${categoryDto}">
+<form id="form" name="form" method="post" action="/catweb/category_update" th:object="${categoryDto}">
     <input type="number" id="id" th:field="*{id}" readonly/>
    <input type="text" id="name" th:field="*{name}" />
     <p><input type="submit" value="수정"/>
         <input type="reset" value="취소"/>
-        <button><a th:href="@{/catweb/oldhtml/category_old_delete(id=*{id})}">삭제</a></button></p>
+        <button><a th:href="@{/catweb/category_old_delete(id=*{id})}">삭제</a></button></p>
 </form>
 </body>
 </html>

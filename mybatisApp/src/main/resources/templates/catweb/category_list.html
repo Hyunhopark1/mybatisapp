@@ -52,6 +52,14 @@
         }
         .category-list{
             border:1px solid black;
+            display: flex;
+            flex-direction: column;
+        }
+        .buttons{
+            display: flex;
+            justify-content: center; /* 버튼을 중앙으로 정렬 */
+            margin-top: auto; /* 컨테이너의 하단에 위치하도록 */
+            padding: 10px; /* 버튼 주위에 여백 추가 */
         }
         .btn-insert{
             width:200px;
@@ -64,35 +72,38 @@
             padding: 10px;
             border-radius: 5px;
         }
-        .buttons{
-            height:60px;
-        }
-        #page{
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+        .page-container{
             display: flex;
-            flex-wrap: wrap;
+            align-items: center; /* 세로 정렬을 중앙으로 설정 */
+            justify-content: space-between; /* 요소들 사이에 균등한 간격을 설정 */
         }
-        #page li{
-            margin: 10px; /* 항목 간의 여백 */
-            padding: 10px; /* 항목 내부 여백 */
-            border: 1px solid black; /* 항목 테두리 */
-            border-radius: 5px; /* 항목 모서리 둥글게 하기 */
-        }
-        #page a{
+
+
+        .page-container a {
             text-decoration: none; /* 링크 기본 스타일 제거 */
-            color: black; /* 링크 텍스트 색상 설정 */
+            color: inherit; /* 링크 색상 상속 */
         }
-        .btn{
-            display: inline-block;
+
+        #page {
+            list-style: none; /* 리스트 기본 스타일 제거 */
+            padding: 0; /* 패딩 제거 */
+            margin: 0; /* 마진 제거 */
+            display: flex; /* 리스트 항목들을 수평으로 배치 */
+            align-items: center; /* 세로 정렬을 중앙으로 설정 */
+        }
+
+        #page li {
+            margin: 0 5px; /* 리스트 항목 사이에 간격 추가 */
+        }
+        #page-box {
+            padding : 10px;
         }
     </style>
 </head>
 <body>
 <!--검색 -->
 <div class="form-container">
-    <form id="search-form" name="search-form" method="get" action="/catweb/category_old_search">
+    <form id="search-form" name="search-form" method="get" action="/catweb/category_search">
         <label for="search-name">이름</label>
         <input type="text" id="search-name" name="name" placeholder="검색할 이름 입력"/>
         <input type="submit" value="검색"/>
@@ -121,16 +132,18 @@
 </div>
 
 <!--페이지 & 페이지 이동 버튼-->
-<div class="buttons">
+<div class="page-container">
     <button class="btn btn-dark"><a th:href="@{/catweb/category_list(page=${searchCategoryDto.page}-1, name=${searchCategoryDto.name})}">이전 페이지</a></button>
     <ul id="page">
-        <li>
+        <li id="page-box">
             page
         </li>
-        <li th:each="item : ${searchCategoryDto}">
-            <a th:href="@{/catweb/category_list(page=${item.page})}">
-                <span th:text="${item.page}"></span>
-            </a>
+        <li th:each="pageNum : ${pageNumbers}">
+            <button class="btn btn-success">
+                <a th:href="@{/catweb/category_list(page=${pageNum}, name=${searchCategoryDto.name})}">
+                    <span th:text="${pageNum}"></span>
+                </a>
+            </button>
         </li>
     </ul>
     <button class="btn btn-dark"><a th:href="@{/catweb/category_list(page=${searchCategoryDto.page}+1, name=${searchCategoryDto.name})}">다음 페이지</a></button>

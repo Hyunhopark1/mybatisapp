@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import java.util.List;
 
@@ -29,8 +31,8 @@ public class CategoryWebController {
     }
 
 
-    @GetMapping("/oldhtml/category_old")    // 브라우저의 URL 주소
-    public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {
+    @GetMapping("/category_old")    // 브라우저의 URL 주소
+    public String categoryOld(Model model, @RequestParam(required=false) String name, @RequestParam int page) {
         try {
             if (name == null) {
                 name = "";
@@ -41,6 +43,7 @@ public class CategoryWebController {
             int count = this.categoryService.countAllByNameContains(searchCategoryDto);
             searchCategoryDto.setTotal(count);
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
+            //뷰에 allList, searchCategoryDto 데이터를 전달
             model.addAttribute("allList", allList);
             model.addAttribute("searchCategoryDto", searchCategoryDto);
         } catch (Exception ex) {
@@ -48,10 +51,10 @@ public class CategoryWebController {
             model.addAttribute("error_message", "오류가 발생했습니다. 관리자에게 문의하세요.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
-        return "oldhtml/category_old";     //resources/templates 폴더안의 화면파일 찾음
+        return "oldhtml/category_old";     //해당 이름의 뷰를 찾아서 데이터를 렌더링함
     }
 
-    @PostMapping("/oldhtml/category_insert")
+    @PostMapping("/category_insert")
     public String categoryOldInsert(@ModelAttribute CategoryDto dto, Model model) {
         try {
             if (dto == null || dto.getName() == null || dto.getName().isEmpty()) {
@@ -136,7 +139,7 @@ public class CategoryWebController {
 
 
     /*아직 미완성*/
-    @GetMapping("/catweb/category_old_search")
+    @GetMapping("/category_search")
     public String categorySearch(Model model,  @RequestParam String name, @RequestParam(value = "page", required = false, defaultValue = "1")  int page) {
         try {
             if (name == null || name.isEmpty()) {
@@ -152,7 +155,7 @@ public class CategoryWebController {
             model.addAttribute("error_message", name + " 오류입니다.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
-        return "redirect:category_list?page="+ page + "&name=" + name;
+        return "redirect:category_old?page="+ page + "&name=" + name;
     }
 
 }

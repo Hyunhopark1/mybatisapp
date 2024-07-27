@@ -13,7 +13,5 @@ import lombok.experimental.SuperBuilder;
 public class CategoryDto implements ICategory {
 
     private Long id;
-
-
     private String name;
 }

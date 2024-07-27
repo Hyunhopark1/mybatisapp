@@ -8,10 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Controller
-@RequestMapping("/catweb")
+@RequestMapping(value="/catweb")
 public class CateWebController {
 
     @Autowired
@@ -22,7 +24,7 @@ public class CateWebController {
         return "index";
     }
     @GetMapping("/category_list")    // 브라우저의 URL 주소
-    public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {
+    public String categoryOld(Model model, @RequestParam(defaultValue = "") String name, @RequestParam int page) {
         try {
             if (name == null) {
                 name = "";
@@ -35,6 +37,10 @@ public class CateWebController {
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
             model.addAttribute("allList", allList);
             model.addAttribute("searchCategoryDto", searchCategoryDto);
+            List<Integer> pages = IntStream.rangeClosed(1, 10)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pages);
         } catch (Exception ex) {
             log.error(ex.toString());
             model.addAttribute("error_message", "오류가 발생했습니다. 관리자에게 문의하세요.");
@@ -43,7 +49,7 @@ public class CateWebController {
         return "catweb/category_list";     //resources/templates 폴더안의 화면파일 찾음
     }
 
-    @GetMapping("/category_old_search")
+    @GetMapping("/category_search")
     public String categorySearch(Model model,  @RequestParam String name, @RequestParam(value = "page", required = false, defaultValue = "1")  int page) {
         try {
             if (name == null || name.isEmpty()) {

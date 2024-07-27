@@ -1,0 +1,71 @@
+1. 클라이언트 : html파일(form의 action속성(url), method속성(http방식),  a태그의 href속성(url) 로 요청을 보냄)
+form태그 : post / get 방식 -> input 태그를 통해 입력된 데이터를 전송한다. 
+ex) <input type="text name="name"> <input type="submit" value="전송">
+--> 컨트롤러에서 @RequestParam 또는 @ModelAttribute로 받음 
+--> input 태그의 name속성값은 @RequestParam 파라미터 변수명 또는 @ModelAttribute 객체 필드명과 일치해야함
+a태그 : 항상 get 방식 -> href속성에 url을 지정할때 쿼리스트링 형식을 통해 쿼리파라미터를 포함하여 데이터를 전송한다
+ex) <a href="/ctweb/category_list?page=1&name=">
+--> 컨트롤러에서는 @RequestParam으로 받음
+-------------------------------------------------------------------------------------------------------------------
+서버
+1. Controller : RequestMapping(value, method)으로 들어온 요청을 메서드와 매핑
+추가로 GetMapping,PostMapping,PutMapping,DeleteMapping은 메소드에만 붙일 수 있다.
+---> 여기서 value는 요청받을 url,  method는 어떤요청(post,get,put,delete)으로 받을지 정의
+ex)
+@Controller
+@RequestMapping(value="/catweb")
+public class CategoryController{
+   (Get방식으로 들어온 요청 처리)
+  @GetMapping(value="/categoryList")
+  public String categoryList(@RequestParam String name,Model model){	
+    -----
+    CategoryDto dto= CategoryDto.builder().name(name).build();
+    List<CategoryDto> allList =categoryService.findAllByNameContains(dto);
+    model.addAttribute("List",allList);
+    return 뷰 경로 or "redirect: url"
+  }
+  (Post방식으로 들어온 요청 처리)
+  @PostMapping(value="/category_insert")
+  public String categoryInsert(@ModelAttribute CategoryDto dto)
+  {
+    ----
+  }
+}
+--->categoryList 메소드에 접근하기위해서는 'localhost:포트번호/catweb/categoryList' url로 들어가야한다.
+--->return "  " ; 는 지정된 이름에 해당하는 뷰 템플릿을 찾아서 렌더링함 ( 내 templates폴더안에 있는 파일명만 지정해야함)
+--->return "redirect : url 경로" 는 클라이언트에게 새로운 URL로 리다이렉트하도록 지시함( 쿼리스트링 사용가능 ) 
+
+2. 
+
+
+
+
+
+
+
+1. get방식으로 name변수에 데이터 전송 ( 리소스
+[HTML]
+<form name="search" action="ctweb/category/search" method="get">
+<input type="text" name="name">
+<input type="submit" value="전송">
+</form>
+[Controller]
+@GetMapping("/category/search")
+public String categorySearch(@RequestParam String name)
+{
+  SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder().name(name).build();
+  categoryService.findAllByNameContains(searchCategoryDto);
+
+  return "redirect:category_list?page=1&name="+name;
+
+
+}
+
+
+2. post방식으로 id, name변수에 데이터 전송
+<form name="insert" action="ctweb/category/insert" method="post">
+<input type="text" name="id">
+<input type="test" name="name">
+<input type="submit" name="전송">
+</form>
+

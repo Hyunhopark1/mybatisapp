@@ -3,17 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Category 보기</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script src="/js/jquery-3.7.1.min.js"></script>
     <style>
+        .header-update{
+            text-align: center;
+            position: sticky;
+            top: 0;
+            left: 0;
+            background:rgb(63, 96, 143);
+        }
+        .insert-title{
+            font-size:40px;
+            font-weight: 700;
+            color:lightgrey;
+            padding:30px 200px;
+        }
+
         button a { text-decoration: none; color:inherit;}
+
+
+        #update-form label{
+            padding : 5px 20px;
+            background:lightgrey;
+            color:black;
+            margin:0px 5px;
+            border:1px solid black;
+
+        }
+        #update-form input{
+            text-align: center;
+        }
+        #id{
+            background:lightgrey;
+            color:black;
+        }
+        .btn-container{
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        .form-input{
+            display: flex;
+            flex-direction: column;
+            margin-top: auto; /* 컨테이너의 하단에 위치하도록 */
+            padding: 20px; /* 버튼 주위에 여백 추가 */
+
+        }
+        .input-id{
+            display: flex;
+            justify-content: center;
+            margin:10px;
+        }
+        .input-name{
+            display: flex;
+            justify-content: center;
+            margin:10px;
+        }
+
     </style>
+    <script>
+
+        function categoryDelete() {
+            let name = $("#name").val();
+            let ret = confirm(name + "를 삭제 하시겠습니까 ?");
+            return ret;
+        }
+        function categoryUpdate() {
+            let name = $("#name").val();
+            let ret = confirm(name + "를 수정 하시겠습니까 ?");
+            return ret;
+        }
+    </script>
 </head>
 <body>
-<form id="form" name="form" method="post" action="/catweb/category_update" th:object="${categoryDto}">
-    <input type="number" id="id" th:field="*{id}" readonly/>
-   <input type="text" id="name" th:field="*{name}" />
-    <p><input type="submit" value="수정"/>
-        <input type="reset" value="취소"/>
-        <button><a th:href="@{/catweb/category_old_delete(id=*{id})}">삭제</a></button></p>
+<div class="header-update">
+    <h1 class="insert-title">분류 정보</h1>
+</div>
+<form id="update-form" name="form" method="post" action="/catweb/category_update" th:object="${categoryDto}" onsubmit="return categoryDelete();">
+    <div class="form-input">
+        <div class="input-id">
+        <label for="id" class="label-id"> ID </label>
+        <input type="number" id="id" th:field="*{id}" readonly/>
+        </div>
+        <div class="input-name">
+        <label for="name" class="label-name"> 이름 </label>
+        <input type="text" id="name" placeholder="이름 입력" th:field="*{name}" />
+        </div>
+    </div>
+
+    <div class="btn-container">
+    <button class="btn btn-primary"><a href="/catweb/category_list?page=1&name=">뒤로</a></button>
+    <button class="btn btn-primary"><a th:href="@{/catweb/category_delete(id=*{id})}">삭제</a></button>
+    <button type="submit" class="btn btn-primary">수정</button>
+    </div>
 </form>
 </body>
 </html>

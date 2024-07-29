@@ -27,18 +27,32 @@ public class CategoryController{
     model.addAttribute("List",allList);
     return 뷰 경로 or "redirect: url"
   }
+
+
   (Post방식으로 들어온 요청 처리)
   @PostMapping(value="/category_insert")
   public String categoryInsert(@ModelAttribute CategoryDto dto)
   {
-    ----
+    categoryService.insert(dto)
   }
 }
 --->categoryList 메소드에 접근하기위해서는 'localhost:포트번호/catweb/categoryList' url로 들어가야한다.
 --->return "  " ; 는 지정된 이름에 해당하는 뷰 템플릿을 찾아서 렌더링함 ( 내 templates폴더안에 있는 파일명만 지정해야함)
 --->return "redirect : url 경로" 는 클라이언트에게 새로운 URL로 리다이렉트하도록 지시함( 쿼리스트링 사용가능 ) 
 
-2. 
+
+[@ReqeustParam / @ModelAttribute ] 
+
+1. @RequestParam : 뷰에서 전달한 각각의 데이터를 받아오려면
+매개변수이름을 input 태그의 name속성이나 a태그의 href속성 url 뒤에있는 쿼리스트링의 매개변수와 동일하게
+해주어 값을 가지고 올 수 있다.
+ex) public String categorySearch(@RequestParam String name){}  --> 뷰에서 보낼때 name속성에 값이 들어가있음
+
+2. @ModelAttribute : 뷰에서 전달한 데이터를 객체로 받아올 수 있는 어노테이션.
+예를들어 뷰에서 보낼 떄 name속성이 id,name인 값을 전달하면  @ModelAttribute를 달아준 객체의 필드 id,name에 값이 저절로 매핑된다.
+
+
+
 
 
 

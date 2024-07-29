@@ -24,7 +24,7 @@ public class CateWebController {
         return "index";
     }
     @GetMapping("/category_list")    // 브라우저의 URL 주소
-    public String categoryOld(Model model, @RequestParam(defaultValue = "") String name, @RequestParam int page) {
+    public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {
         try {
             if (name == null) {
                 name = "";

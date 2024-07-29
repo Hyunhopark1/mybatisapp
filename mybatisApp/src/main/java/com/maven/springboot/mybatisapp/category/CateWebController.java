@@ -24,10 +24,11 @@ public class CateWebController {
         return "index";
     }
     @GetMapping("/category_list")    // 브라우저의 URL 주소
-    public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {
+    public String categoryList(Model model, @RequestParam String name, @RequestParam Integer page) {
         try {
-            if (name == null) {
+            if (page == null ||name == null) {
                 name = "";
+                page=1;
             }
 //            List<ICategory> allList = this.categoryService.getAllList();
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()

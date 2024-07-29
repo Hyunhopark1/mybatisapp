@@ -1,4 +1,4 @@
-1. 클라이언트 : html파일(form의 action속성(url), method속성(http방식),  a태그의 href속성(url) 로 요청을 보냄)
+1. 클라이언트(뷰)에서 보낼 때 : html파일(form의 action속성(url), method속성(http방식),  a태그의 href속성(url) 로 요청을 보냄)
 form태그 : post / get 방식 -> input 태그를 통해 입력된 데이터를 전송한다. 
 ex) <input type="text name="name"> <input type="submit" value="전송">
 --> 컨트롤러에서 @RequestParam 또는 @ModelAttribute로 받음 
@@ -6,6 +6,9 @@ ex) <input type="text name="name"> <input type="submit" value="전송">
 a태그 : 항상 get 방식 -> href속성에 url을 지정할때 쿼리스트링 형식을 통해 쿼리파라미터를 포함하여 데이터를 전송한다
 ex) <a href="/ctweb/category_list?page=1&name=">
 --> 컨트롤러에서는 @RequestParam으로 받음
+
+2. 클라이언트(뷰)에서 받을 때 : th:text 속성으로 컨트롤러에서 model.addAttribute로 보낸 데이터를 받아옴
+ex) <span th:text="${키 이름}"></span>
 -------------------------------------------------------------------------------------------------------------------
 서버
 1. Controller : RequestMapping(value, method)으로 들어온 요청을 메서드와 매핑
@@ -43,7 +46,7 @@ public class CategoryController{
 
 
 
-1. get방식으로 name변수에 데이터 전송 ( 리소스
+1. get방식으로 name변수에 데이터 전송 ( 리소스를 조회하고 데이터를 가져옴 )
 [HTML]
 <form name="search" action="ctweb/category/search" method="get">
 <input type="text" name="name">
@@ -62,7 +65,7 @@ public String categorySearch(@RequestParam String name)
 }
 
 
-2. post방식으로 id, name변수에 데이터 전송
+2. post방식으로 id, name변수에 데이터 전송 ( 리소스 생성 )
 <form name="insert" action="ctweb/category/insert" method="post">
 <input type="text" name="id">
 <input type="test" name="name">

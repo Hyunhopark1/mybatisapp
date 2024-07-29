@@ -133,6 +133,26 @@ public class CateWebController {
         return "redirect:category_list?page=1&name=";
     }
 
+    @PostMapping("/category/update")
+    public String categoryUpdate(Model model, @ModelAttribute CategoryDto dto) throws Exception {
+        try {
+            if (dto == null || dto.getId() <= 0 || dto.getName().isEmpty()) {
+                model.addAttribute("error_message", "id는 1보다 커야하고, name 이 있어야 합니다.");
+                return "error/error_bad";  // resources/templates 폴더안의 화면파일
+            }
+            ICategory find = this.categoryService.findById(dto.getId());
+            if (find == null) {
+                model.addAttribute("error_message", dto.getId() + " 데이터가 없습니다.");
+                return "error/error_find";
+            }
+            this.categoryService.update(dto.getId(), dto);
+        }catch (Exception ex) {
+            log.error(ex.toString());
+            model.addAttribute("error_message", dto.getName() + " 중복입니다.");
+            return "error/error_save";  // resources/templates 폴더안의 화면파일
+        }
+        return "redirect:/catweb/category_list?page=1&name=";
+    }
 
 
 }

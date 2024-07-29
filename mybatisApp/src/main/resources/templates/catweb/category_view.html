@@ -65,12 +65,20 @@
 
     </style>
     <script>
-
         function categoryDelete() {
+            let id = $("#id").val();
             let name = $("#name").val();
-            let ret = confirm(name + "를 삭제 하시겠습니까 ?");
-            return ret;
+            let ret = confirm(name + "를 삭제 하시겠습니까?");
+            if (ret) {
+                window.location.href = "/catweb/category_delete?id=" + id;
+            }
         }
+
+        function categoryUpdate() {
+            let name = $("#name").val();
+            return confirm(name + "로 수정하시겠습니까?");
+        }
+
 
     </script>
 </head>
@@ -78,22 +86,22 @@
 <div class="header-update">
     <h1 class="insert-title">분류 정보</h1>
 </div>
-<form id="update-form" name="form" method="post" action="/catweb/category_delete" th:object="${categoryDto}">
+<form id="update-form" name="form" method="post" action="/catweb/category/update" th:object="${categoryDto}" onsubmit="return categoryUpdate()">
     <div class="form-input">
         <div class="input-id">
         <label for="id" class="label-id"> ID </label>
-        <input type="number" id="id" name="id" th:field="*{id}" readonly/>
+        <input type="number" id="id" name="id" th:field="${categoryDto.id}" readonly/>
         </div>
         <div class="input-name">
         <label for="name" class="label-name"> 이름 </label>
-        <input type="text" id="name" name="name" placeholder="이름 입력" th:field="*{name}" />
+        <input type="text" id="name" name="name" placeholder="이름 입력" th:field="${categoryDto.name}" />
         </div>
     </div>
 
     <div class="btn-container">
-    <button class="btn btn-primary"><a href="/catweb/category_list?page=1&name=">뒤로</a></button>
-    <button class="btn btn-primary"><a th:href="@{/catweb/category_delete(id=${categoryDto.id})}">삭제</a></button>
-    <button type="submit" class="btn btn-primary">수정</button>
+    <button type="button" class="btn btn-primary"><a href="/catweb/category_list?page=1&name=">뒤로</a></button>
+    <button type="button" class="btn btn-primary" onclick="categoryDelete()">삭제</button>
+    <input type="submit" class="btn btn-primary" value="수정">
     </div>
 </form>
 </body>

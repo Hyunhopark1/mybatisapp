@@ -25,7 +25,6 @@
         #search-form > label{
             flex : 1;
             float: left;
-            border: 2px solid black;
             padding : 40px 150px;
             margin:10px;
             font-size: 20px;
@@ -103,9 +102,9 @@
 <body>
 <!--검색 -->
 <div class="form-container">
-    <form id="search-form" name="search-form" method="get" action="/catweb/category_search">
+    <form id="search-form" name="search-form" method="get" action="/catweb/category_search" th:object="${searchCategoryDto}">
         <label for="search-name">이름</label>
-        <input type="text" id="search-name" name="name" placeholder="검색할 이름 입력"/>
+        <input type="text" id="search-name" name="name" placeholder="검색할 이름 입력" th:value="${searchCategoryDto.name}"/>
         <input type="submit" value="검색"/>
     </form>
 </div>

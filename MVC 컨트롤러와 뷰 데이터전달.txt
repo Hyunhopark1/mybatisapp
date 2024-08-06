@@ -43,18 +43,19 @@ public class CategoryController{
 
 [@ReqeustParam / @ModelAttribute ] 
 
-1. @RequestParam : 뷰에서 전달한 각각의 데이터를 받아오려면
-매개변수이름을 input 태그의 name속성이나 a태그의 href속성 url 뒤에있는 쿼리스트링의 매개변수와 동일하게
-해주어 값을 가지고 올 수 있다.
+1. @RequestParam : GET방식의 쿼리파라미터를 받아올 때 사용한다.
+form태그로 데이터를 보낼때는 name속성의 값(파라미터)이 action속성의 url 뒤에 들어가고
+a태그로 데이터를 보낼 때는 href속성의 url뒤에 직접 파라미터를 적어준다.
+url 뒤에있는 쿼리스트링의  ?page=1&name=   다음과같이 두 변수의 값을 받아온다.
 ex) public String categorySearch(@RequestParam String name){}  --> 뷰에서 보낼때 name속성에 값이 들어가있음
 
 2. @ModelAttribute : 뷰에서 전달한 데이터를 객체로 받아올 수 있는 어노테이션.
-예를들어 뷰에서 보낼 떄 name속성이 id,name인 값을 전달하면  @ModelAttribute를 달아준 객체의 필드 id,name에 값이 저절로 매핑된다.
+보통 form에서 보내온 데이터를 POST방식으로 받을 때 사용한다.
+예를들어 뷰의 form에서 데이터를 보낼 떄 name속성이 id,name인 값을 전달하면  @ModelAttribute를 달아준 객체의 필드 id,name에 값이 저절로 매핑된다.
 
+* model.addAttribute :  Model 객체의 키와 값을 추가한다. / 뷰에서는 키이름으로 해당 객체의 값을 참조할 수 있다.(리스트,객체 모두 전송 가능)
 
-
-
-
+* 템플릿 화면파일을 return하는 메소드가 아닐경우(redirect할경우)에는 Model객체를 사용하지 않는다.
 
 
 
